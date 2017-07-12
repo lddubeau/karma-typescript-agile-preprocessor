@@ -19,7 +19,7 @@ module.exports = (function register() {
 
   function factoryTypeScriptPreprocessor(logger, config, basePath) {
     if (toString.call(config.tsconfigPath) !== "[object String]") {
-      throw new Error("tsconfigPath was not defined");
+      throw new Error("tsconfigPath is undefined");
     }
 
     const compilerOptions =
