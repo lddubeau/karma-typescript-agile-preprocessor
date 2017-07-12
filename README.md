@@ -1,33 +1,29 @@
-This preprocessor uses [gulp-typescript transpiler](https://www.npmjs.com/package/gulp-typescript), a great plugin mainted by [ivogabe](https://github.com/ivogabe) and other 21 contributors. Among its best features we highlight:
+This is a fork of
+[karma-typescript-preprocessor2](https://github.com/klaygomes/karma-typescript-preprocessor2). I
+was having a number of problems with that plugin and decided to fork.
 
- - Very fast rebuilds by using incremental compilation
- - Very good error reporting handle
+Why the "agile" in the name? The term "agile" is one of those terms that
+marketing slaps all over the place without any good reason. I needed to
+distinguish it from previous preprocessors and decided to slap "agile" in there
+as a joke. It is nicer than incrementing ``2`` to ``3``, which would be
+confusing anyway because it has nothing to do with actual version numbers.
 
-
+This preprocessor passes most of the work to
+[gulp-typescript](https://www.npmjs.com/package/gulp-typescript), a great plugin
+for ``gulp``.
 
 # How to install
 
-First you need to include reference to this plugin in your `package.json`, just write karma-typescript-preprocessor2 (note number **2** at the end):
+Include a reference to this plugin in your ``package.json``, and use ``npm
+install`` to install it.
 
-```JavaScript
-  {
-    "devDependencies": {
-      "karma": "^0.13.15",
-      "karma-typescript-preprocessor2": "1.2.1"
-    }
-  }
-```
-You can also install via cli:
+# Configuration Options
 
-`$ npm install karma-typescript-preprocessor2 --save-dev`
-
-## Configuration Options
-
-Here is a full featured example with all options that you can use to configure the preprocessor:
-
+Here is a full featured example with all options that you can use to configure
+the preprocessor:
 
 ```javascript
-// karma.conf.js 
+// karma.conf.js
 module.exports = function(config) {
   config.set({
     files: [
@@ -37,7 +33,7 @@ module.exports = function(config) {
       '**/*.ts': ['typescript', 'sourcemap']   // Use karma-sourcemap-loader
     },
     typescriptPreprocessor: {
-      // options passed to typescript compiler 
+      // options passed to typescript compiler
       tsconfigPath: './tsconfig.json', // *obligatory
       compilerOptions: { // *optional
         removeComments: false
@@ -45,10 +41,10 @@ module.exports = function(config) {
       // Options passed to gulp-sourcemaps to create sourcemaps
       sourcemapOptions: {includeContent: true, sourceRoot: '/src'},
       // ignore all files that ends with .d.ts (this files will not be served)
-      ignorePath: function(path){ 
+      ignorePath: function(path){
        return /\.d\.ts$/.test(path);
       },
-      // transforming the filenames 
+      // transforming the filenames
       // you can pass more than one, they will be execute in order
       transformPath: [function(path) { // *optional
         return path.replace(/\.ts$/, '.js');
@@ -84,20 +80,26 @@ module.exports = function(config) {
 }
 ```
 
-By design ``karma-typescript-preprocessor2`` only allows primary configuration build by ``tsconfig.json`` . Working this way, a lot of problems with typos and references are completely solved, as compiler will use same ``basedir`` to resolve files, but you can always override (or include) new options by using ``compilerOptions`` property.
+We require a primary configuration from a ``tsconfig.json`` file. This solves a
+lot of problems, as your compiler's configuration in ``karma`` will be
+consistent with other tools you use that read the same ``tsconfig.json``, but
+you can override (or add) options by using the ``compilerOptions`` property.
 
 ## Unsuported typescript configuration options
-As we use gulp-typescript to transpiler typescript code, we have the same unsuported properties as theirs, so:
+
+As we use ``gulp-typescript`` to transpile typescript code, we have the same
+unsuported options as ``gulp-typescript``, so:
 
  - Sourcemap options (sourceMap, inlineSources, sourceRoot)
  - rootDir - Use base option of gulp.src() instead.
  - watch - Use karma ``singleRun: false`` configuration instead.
  - project - See "Using tsconfig.json".
- - 
-And obvious ones: help, version
+ - and the obvious ones: ``help``, ``version``
 
 ## Sourcemaps
-Transpiling with gulp-typescript requires the use of gulp-sourcemaps to create sourcemaps.
+
+Transpiling with ``gulp-typescript`` requires the use of ``gulp-sourcemaps`` to
+create sourcemaps.
 
 ## Plugin Options
 
@@ -113,7 +115,8 @@ function(path){
 
 ```
 
-It is used to change virtual path of served files. Sometimes it should be necessary to change virtual directory of a served file to allow tests, example:
+It is used to change virtual path of served files. Sometimes it should be
+necessary to change virtual directory of a served file to allow tests, example:
 
 Let's suppose that you have the following folder hierarchy:
 
@@ -133,18 +136,22 @@ Let's suppose that you have the following folder hierarchy:
      file2.spec.ts
 ```
 
-If ``file1.spec.ts`` and ``file2.spec.ts`` reference ``file1.ts`` and ``file2.ts``, and you are using typescript ``module`` option, you will need to remove virtual directory ``test``, so all modules referenced by ``*.specs.ts`` will be solved successfully. To make it work, you just need to write something like:
+If ``file1.spec.ts`` and ``file2.spec.ts`` reference ``file1.ts`` and
+``file2.ts``, and you are using typescript ``module`` option, you will need to
+remove virtual directory ``test``, so all modules referenced by ``*.specs.ts``
+will be solved successfully. To make it work, you just need to write something
+like:
 
 ```
-// karma.conf.js 
+// karma.conf.js
 (...)
 typescriptPreprocessor: {
-  // options passed to the typescript compiler 
+  // options passed to the typescript compiler
   tsconfigPath: './tsconfig.json', //*obligatory
   compilerOptions: {//*optional
     removeComments: false
   },
-  // transforming the filenames 
+  // transforming the filenames
   // you can pass more than one, they will be execute in order
   transformPath: [function(path) {//
    return path.replace(/\.ts$/, '.js'); // first change .ts to js
@@ -155,11 +162,10 @@ typescriptPreprocessor: {
 (...)
 ```
 
-[Here](https://github.com/klaygomes/angular-typescript-jasmine-seed) there is a simple example seed where you can see what is described here in action. 
-
 ### ignorePath: (string)=> boolean
 
-It could be used to ignore files that you don't want to serve. Keep in mind that  ``ignorePath`` runs before ``transformPath``
+It could be used to ignore files that you don't want to serve. Keep in mind that
+``ignorePath`` runs before ``transformPath``
 
 default value:
 ```
@@ -171,22 +177,16 @@ function(path){
 
 ### sourcemapOptions: any
 
-Specify ``gulp-sourcemaps`` write options. Inline sourcemaps are the easiest to configure for testing. For more info [see gulp-sourcemaps write options](https://www.npmjs.com/package/gulp-sourcemaps).
+Specify ``gulp-sourcemaps`` write options. Inline sourcemaps are the easiest to
+configure for testing. For more info [see gulp-sourcemaps write
+options](https://www.npmjs.com/package/gulp-sourcemaps).
 
 ### compilerOptions: any
 
-You can provide or override any compiler options avaliable by ``gulp-typescript``, for more info [you can access gulp-typescript project options](https://github.com/ivogabe/gulp-typescript#options).
+You can provide or override any compiler options avaliable by
+``gulp-typescript``, for more info
+[you can access gulp-typescript project options](https://github.com/ivogabe/gulp-typescript#options).
 
-## License
+# License
 
-``karma-typescript-preprocessor2`` is licensed under the [MIT license](https://github.com/klaygomes/karma-typescript-preprocessor2/blob/master/LICENSE).
-
-
-Need help? Open an issue :)
-
-
-
-
-
-
-
+Licensed under the [MIT license](https://github.com/lddubea/karma-typescript-agile-preprocessor/blob/master/LICENSE).
