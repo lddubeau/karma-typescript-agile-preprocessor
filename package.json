@@ -10,7 +10,7 @@
   "devDependencies": {
     "eslint": "^3.16.1",
     "eslint-config-lddubeau-base": "^1.0.4",
-    "mocha": "^2.3.3",
+    "mocha": "^3.4.2",
     "should": "7.1.1",
     "typescript": "~2.4.0"
   },
