@@ -24,3 +24,7 @@
     eliminated. It is probably not perfect but much better than it was.
 
   - Reworked some of the internal logic. Hopefully, I've not broken anything.
+
+  - When ``transformPath`` option is an array, it must contain only
+    functions. Previous versions would ignore values that are not
+    functions. Now it will cause a crash.

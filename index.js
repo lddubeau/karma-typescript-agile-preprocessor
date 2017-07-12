@@ -72,11 +72,8 @@ module.exports = (function register() {
     }
 
     function transformPath(filepath) {
-      return _.reduce(config.transformPath,
-                      (memo, clb) =>
-                      // I simple ignore clb that was not function
-                      (_.isFunction(clb) ? clb.call(config, memo) : memo),
-                      filepath);
+      return config.transformPath.reduce((memo, clb) => clb.call(config, memo),
+                                         filepath);
     }
 
     let compilationResults = Object.create(null);
