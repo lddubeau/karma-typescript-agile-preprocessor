@@ -17,9 +17,7 @@ module.exports = (function register() {
 
   let _currentState = state.idle;
 
-  function factoryTypeScriptPreprocessor(logger, helper, config, basePath) {
-    const _ = helper._;
-
+  function factoryTypeScriptPreprocessor(logger, config, basePath) {
     if (toString.call(config.tsconfigPath) !== "[object String]") {
       throw new Error("tsconfigPath was not defined");
     }
@@ -27,31 +25,29 @@ module.exports = (function register() {
     const compilerOptions =
           (config.compilerOptions || config.tsconfigOverrides) || {};
 
-    if (!_.isObject(compilerOptions) || _.isDate(compilerOptions) ||
-        _.isRegExp(compilerOptions)) {
+    if (typeof compilerOptions !== "object" || compilerOptions instanceof Date ||
+        compilerOptions instanceof RegExp) {
       throw new Error("compilerOptions if defined, should be an object.");
     }
 
-    const defaultCompilerOptions = {
-      outDir: undefined,
-    };
-
-    _.extend(compilerOptions, defaultCompilerOptions);
-
+    // outDir makes no sense here. If we set it to ``undefined``, we get a
+    // warning that it must be a string. If we delete it, the compilation
+    // process fails, somehow. So we set it to an empty string.
+    compilerOptions.outDir = "";
 
     config.transformPath = config.transformPath ||
       [filepath => filepath.replace(/\.ts$/i, ".js")];
 
-    if (_.isFunction(config.transformPath)) {
+    if (typeof config.transformPath === "function") {
       config.transformPath = [config.transformPath];
     }
-    else if (!_.isArray(config.transformPath)) {
+    else if (!Array.isArray(config.transformPath)) {
       throw new Error("transformPath must be an array or a function");
     }
 
-    config.ignorePath = (config.ignorePath || _.noop);
+    config.ignorePath = (config.ignorePath || (() => false));
 
-    if (!_.isFunction(config.ignorePath)) {
+    if (typeof config.ignorePath !== "function") {
       throw new Error("ignorePath must be a function");
     }
 
@@ -181,7 +177,7 @@ not compiled or it is a definition file.`);
   }
 
   factoryTypeScriptPreprocessor.$inject =
-    ["logger", "helper", "config.typescriptPreprocessor", "config.basePath"];
+    ["logger", "config.typescriptPreprocessor", "config.basePath"];
 
   return {
     "preprocessor:typescript": ["factory", factoryTypeScriptPreprocessor],

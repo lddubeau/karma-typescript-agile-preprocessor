@@ -28,3 +28,13 @@
   - When ``transformPath`` option is an array, it must contain only
     functions. Previous versions would ignore values that are not
     functions. Now it will cause a crash.
+
+  - Dropped the usage of lodash/underscore.
+
+    There was very little to be gained from using lodash/underscore in the
+    plugin and in the test suite. The code of the plugin is meant to run in
+    Node, and we've dropped support of anything prior to Node 4. So having a
+    library handle edge cases on this and that browser is not useful.
+
+    This change moreover eliminates a warning that lodash will no longer be
+    accessible in Karma 2 and over.
