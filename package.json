@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-typescript": ">=2.9.2, <4"
+    "gulp-typescript": "^3"
   },
   "devDependencies": {
     "eslint": "^3.16.1",

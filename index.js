@@ -146,8 +146,8 @@ not compiled or it is a definition file.`);
 
       const output = new Writable({ objectMode: true });
       const tsResult = tsProject.src()
-        .pipe(sourcemaps.init())
-        .pipe(ts(tsProject));
+            .pipe(sourcemaps.init())
+            .pipe(tsProject());
 
       // Save compiled files to memory.
       output._write = (chunk, enc, next) => {
