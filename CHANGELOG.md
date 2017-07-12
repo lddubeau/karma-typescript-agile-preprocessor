@@ -22,3 +22,5 @@
   - The code has been subjected to a general cleanup. It has been linted, many
     typos and inconsistencies have been fixed, bad practices have been
     eliminated. It is probably not perfect but much better than it was.
+
+  - Reworked some of the internal logic. Hopefully, I've not broken anything.

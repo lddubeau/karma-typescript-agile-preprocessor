@@ -56,10 +56,6 @@ module.exports = (function register() {
     }
 
     const log = logger.create("preprocessor:typescript");
-    let compilationResults = [];
-    const serveQueue = [];
-    const tsconfigPath = path.resolve(basePath, config.tsconfigPath);
-    const tsProject = ts.createProject(tsconfigPath, compilerOptions);
 
     function dummyFile(message) {
       return `/* preprocessor:typescript --> ${message} */`;
@@ -70,6 +66,7 @@ module.exports = (function register() {
       return filePath.replace(/[/|\\]/g, sep);
     }
 
+    const serveQueue = [];
     function enqueueForServing(file, done) {
       serveQueue.push({ file, done });
     }
@@ -82,6 +79,7 @@ module.exports = (function register() {
                       filepath);
     }
 
+    let compilationResults = Object.create(null);
     // Used to fetch files from buffer.
     function _serveFile(requestedFile, done) {
       requestedFile.path = transformPath(requestedFile.path);
@@ -99,29 +97,19 @@ module.exports = (function register() {
         return;
       }
 
-      let wasCompiled;
-      const temp = [];
-      while (compilationResults.length) {
-        const compiled = compilationResults.shift();
-        if (_normalize(transformPath(compiled.path)) === _normalize(requestedFile.path)) {
-          wasCompiled = true;
-          done(null, compiled.contents.toString());
-        }
-        else {
-          temp.push(compiled);
-        }
+      const normalized = _normalize(requestedFile.path);
+      const compiled = compilationResults[normalized];
+      if (compiled) {
+        delete compilationResults[normalized];
+        done(null, compiled.contents.toString());
+        return;
       }
-
-      // Refeed buffer
-      compilationResults = temp;
 
       // If the file was not found in the stream, then maybe it is not compiled
-      // or it is a definition file
-      if (!wasCompiled) {
-        log.debug(`${requestedFile.originalPath} was not found. Maybe it was \
+      // or it is a definition file.
+      log.debug(`${requestedFile.originalPath} was not found. Maybe it was \
 not compiled or it is a definition file.`);
-        done(null, dummyFile("This file was not compiled"));
-      }
+      done(null, dummyFile("This file was not compiled"));
     }
 
     // Responsible for flushing the cache and notifying karma.
@@ -136,13 +124,15 @@ not compiled or it is a definition file.`);
       }
     }
 
+    const tsconfigPath = path.resolve(basePath, config.tsconfigPath);
+    const tsProject = ts.createProject(tsconfigPath, compilerOptions);
     function compile() {
       if (dontCompile) return;
 
       log.debug("Compiling ts files...");
 
       _currentState = state.compiling;
-      compilationResults = [];
+      compilationResults = Object.create(null);
 
       const output = new Writable({ objectMode: true });
       const tsResult = tsProject.src()
@@ -151,7 +141,7 @@ not compiled or it is a definition file.`);
 
       // Save compiled files to memory.
       output._write = (chunk, enc, next) => {
-        compilationResults.push(chunk);
+        compilationResults[_normalize(chunk.path)] = chunk;
         next();
       };
 
