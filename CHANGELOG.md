@@ -1,3 +1,10 @@
+* 2.0.1:
+
+  - Something changed between ``gulp-typescript`` 3.2.0 and 3.2.1 that causes
+    this preprocessor to fail if used with ``gulp-typescript`` higher than
+    3.2.0. As a stopgap measure, I'm pinning the maximum version of
+    ``gulp-typescript`` to 3.2.0.
+
 * 2.0.0:
 
   - Fork from ``karma-typescript-preprocessor2``.
