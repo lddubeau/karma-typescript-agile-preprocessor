@@ -1,12 +1,14 @@
-/* global process*/
+/* global process */
+
 "use strict";
+
 const path = require("path");
 const ts = require("gulp-typescript");
 const sourcemaps = require("gulp-sourcemaps");
-const Writable = require("stream").Writable;
+const { Writable } = require("stream");
 
 const dontCompile = process.env.dontCompile === "true";
-const sep = path.sep;
+const { sep } = path.sep;
 
 module.exports = (function register() {
   const state = {

@@ -1,11 +1,12 @@
 /* global describe, it, beforeEach, process */
+
 "use strict";
 
 /* eslint-disable import/no-extraneous-dependencies */
 const chai = require("chai");
 const preprocessor = require("../index")["preprocessor:typescript"][1];
 
-const expect = chai.expect;
+const { expect } = chai;
 const noop = () => false;
 
 const logger = {
