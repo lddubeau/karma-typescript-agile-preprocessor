@@ -12,7 +12,7 @@
     "eslint": "^4.19.1",
     "eslint-config-lddubeau-base": "^2.0.0",
     "mocha": "^5.1.1",
-    "typescript": "~2.4.0"
+    "typescript": "^2.8.3"
   },
   "repository": {
     "type": "git",
