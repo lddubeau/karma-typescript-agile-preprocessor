@@ -8,7 +8,7 @@
     "gulp-typescript": ">=3 <=3.2.0"
   },
   "devDependencies": {
-    "chai": "^4.1.0",
+    "chai": "^4.1.2",
     "eslint": "^3.16.1",
     "eslint-config-lddubeau-base": "^1.0.4",
     "mocha": "^3.4.2",
