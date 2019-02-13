@@ -32,10 +32,7 @@ module.exports = (function register() {
       throw new Error("compilerOptions if defined, should be an object.");
     }
 
-    // outDir makes no sense here. If we set it to ``undefined``, we get a
-    // warning that it must be a string. If we delete it, the compilation
-    // process fails, somehow. So we set it to an empty string.
-    compilerOptions.outDir = "";
+    compilerOptions.outDir = basePath;
 
     config.transformPath = config.transformPath ||
       [filepath => filepath.replace(/\.ts$/i, ".js")];
