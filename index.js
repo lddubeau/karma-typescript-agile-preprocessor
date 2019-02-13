@@ -8,7 +8,7 @@ const sourcemaps = require("gulp-sourcemaps");
 const { Writable } = require("stream");
 
 const dontCompile = process.env.dontCompile === "true";
-const { sep } = path.sep;
+const { sep } = path;
 
 module.exports = (function register() {
   const state = {
