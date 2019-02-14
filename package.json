@@ -18,6 +18,9 @@
     "mocha": "^5.2.0",
     "typescript": "^3.3.3"
   },
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "mocha",
     "postversion": "npm test && npm publish",
