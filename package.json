@@ -1,6 +1,6 @@
 {
   "name": "karma-typescript-agile-preprocessor",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Leverage the power of gulp-typescript for a simple yet powerful Karma preprocessor.",
   "main": "index.js",
   "dependencies": {
@@ -18,7 +18,9 @@
     "mocha": "^5.2.0",
     "typescript": "^3.3.3"
   },
-  "bundledDependencies": ["gulp-typescript"],
+  "bundledDependencies": [
+    "gulp-typescript"
+  ],
   "files": [
     "index.js"
   ],
