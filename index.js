@@ -32,7 +32,11 @@ module.exports = (function register() {
       throw new Error("compilerOptions if defined, should be an object.");
     }
 
+    // It is necessary for this plugin to override both outDir and
+    // rootDir. Otherwise, the path resulting from compilation are
+    // unpredictable.
     compilerOptions.outDir = basePath;
+    compilerOptions.rootDir = basePath;
 
     config.transformPath = config.transformPath ||
       [filepath => filepath.replace(/\.ts$/i, ".js")];
