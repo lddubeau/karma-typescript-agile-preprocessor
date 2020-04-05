@@ -1,4 +1,4 @@
-/* global describe, it, beforeEach, process */
+/* global describe, it, beforeEach */
 
 "use strict";
 
@@ -6,7 +6,6 @@ const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
 
-/* eslint-disable import/no-extraneous-dependencies */
 const chai = require("chai");
 const preprocessor = require("../index")["preprocessor:typescript"][1];
 
@@ -93,13 +92,14 @@ describe("factoryTypeScriptPreprocessor", () => {
 });
 
 describe("integration", function integration() {
+  // eslint-disable-next-line no-invalid-this
   this.timeout(10000);
 
   const tests = fs.readdirSync(__dirname)
         .filter(file => /^project_/.test(file));
 
   for (const test of tests) {
-    it(test, (done) => {
+    it(test, done => {
       exec("../../node_modules/.bin/karma start --single-run", {
         cwd: path.join(__dirname, test),
         env: { PATH: process.env.PATH },

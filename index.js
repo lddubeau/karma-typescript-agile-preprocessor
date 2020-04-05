@@ -1,4 +1,3 @@
-/* global process */
 
 "use strict";
 
@@ -19,6 +18,7 @@ module.exports = (function register() {
 
   let _currentState = state.idle;
 
+  // eslint-disable-next-line max-lines-per-function
   function factoryTypeScriptPreprocessor(logger, config, basePath) {
     if (toString.call(config.tsconfigPath) !== "[object String]") {
       throw new Error("tsconfigPath is undefined");
@@ -27,7 +27,8 @@ module.exports = (function register() {
     const compilerOptions =
           (config.compilerOptions || config.tsconfigOverrides) || {};
 
-    if (typeof compilerOptions !== "object" || compilerOptions instanceof Date ||
+    if (typeof compilerOptions !== "object" ||
+        compilerOptions instanceof Date ||
         compilerOptions instanceof RegExp) {
       throw new Error("compilerOptions if defined, should be an object.");
     }
@@ -56,24 +57,19 @@ module.exports = (function register() {
 
     const log = logger.create("preprocessor:typescript");
 
-    function dummyFile(message) {
-      return `/* preprocessor:typescript --> ${message} */`;
-    }
+    const dummyFile = message => `/* preprocessor:typescript --> ${message} */`;
 
     // Called to normalize file paths
-    function _normalize(filePath) {
-      return filePath.replace(/[/|\\]/g, sep);
-    }
+    const _normalize = filePath => filePath.replace(/[/|\\]/g, sep);
 
     const serveQueue = [];
     function enqueueForServing(file, done) {
       serveQueue.push({ file, done });
     }
 
-    function transformPath(filepath) {
-      return config.transformPath.reduce((memo, clb) => clb.call(config, memo),
-                                         filepath);
-    }
+    const transformPath = filepath =>
+          config.transformPath.reduce((memo, clb) => clb.call(config, memo),
+                                      filepath);
 
     let compilationResults = Object.create(null);
     // Used to fetch files from buffer.

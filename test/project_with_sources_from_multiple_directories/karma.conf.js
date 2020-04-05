@@ -4,7 +4,7 @@
 
 const tsPlugin = require("../../index");
 
-module.exports = (config) => {
+module.exports = config => {
   const options = {
     basePath: "",
     frameworks: ["mocha"],
@@ -23,7 +23,7 @@ module.exports = (config) => {
     typescriptPreprocessor: {
       tsconfigPath: "./test/tsconfig.json",
       compilerOptions: {
-        // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+        // eslint-disable-next-line global-require
         typescript: require("typescript"),
         sourceMap: false,
         // We have to have them inline for the browser to find them.
